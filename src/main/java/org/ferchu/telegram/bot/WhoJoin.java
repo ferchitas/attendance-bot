@@ -20,7 +20,7 @@ public class WhoJoin extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         final String messageTextReceived = update.getMessage().getText();
-
+        System.out.println("Hello we are inside the bot!!!");
         // Se obtiene el id de chat del usuario
         final long chatId = update.getMessage().getChatId();
 
