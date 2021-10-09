@@ -24,10 +24,12 @@ public class WhoJoin extends TelegramLongPollingBot {
         final long chatId = update.getMessage().getChatId();
 
         // Se crea un objeto mensaje
-        SendMessage message = new SendMessage().setChatId(chatId).setText(messageTextReceived);
-
+        SendMessage message = new SendMessage();
+        message.setChatId(String.valueOf(chatId));
+        message.setText(messageTextReceived);
         try {
             // Se envía el mensaje
+
             execute(message);
         } catch (TelegramApiException e) {
             e.printStackTrace();
