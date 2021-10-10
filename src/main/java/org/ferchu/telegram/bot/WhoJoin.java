@@ -27,7 +27,7 @@ public class WhoJoin extends TelegramLongPollingBot {
         // Se crea un objeto mensaje
         SendMessage message = new SendMessage();
         message.setChatId(String.valueOf(chatId));
-        message.setText(messageTextReceived + "holaa");
+        message.setText(messageTextReceived + "putazorra");
         try {
             // Se envía el mensaje
 
@@ -36,4 +36,6 @@ public class WhoJoin extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
+
+    //private void callCommand
 }
