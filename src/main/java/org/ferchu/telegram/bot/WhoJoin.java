@@ -29,7 +29,7 @@ public class WhoJoin extends TelegramLongPollingBot {
         // Se obtiene el id de chat del usuario
         final long chatId = update.getMessage().getChatId();
 
-        if(messageTextReceived == "poll") {
+        if(messageTextReceived.equals("poll") || messageTextReceived.equals("Poll")) {
 
             SendPoll poll = new SendPoll();
             poll.setChatId(String.valueOf(chatId));
@@ -51,7 +51,7 @@ public class WhoJoin extends TelegramLongPollingBot {
             // Se crea un objeto mensaje
             SendMessage message = new SendMessage();
             message.setChatId(String.valueOf(chatId));
-            message.setText(messageTextReceived + "putazorra");
+            message.setText(messageTextReceived + " putazorra");
             try {
                 // Se envía el mensaje
 
