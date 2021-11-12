@@ -23,8 +23,9 @@ public class AttendanceList {
     private String header;
     private String message;
     private LocalDateTime dateTime;
+    private long chatId;
 
     @Null
-    @OneToMany(targetEntity= Attendee.class, mappedBy="attendanceList", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @OneToMany(targetEntity= Attendee.class, mappedBy="attendanceList", fetch=FetchType.LAZY, cascade=CascadeType.ALL, orphanRemoval = true)
     private List<Attendee> attendees;
 }

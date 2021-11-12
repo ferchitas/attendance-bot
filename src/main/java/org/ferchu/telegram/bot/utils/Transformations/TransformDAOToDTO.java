@@ -1,4 +1,4 @@
-package org.ferchu.telegram.bot.utils;
+package org.ferchu.telegram.bot.utils.Transformations;
 
 import org.ferchu.telegram.bot.dao.AttendanceListDao;
 import org.ferchu.telegram.bot.dao.AttendeeDao;
@@ -8,6 +8,13 @@ import org.ferchu.telegram.bot.model.Attendee;
 import java.util.ArrayList;
 
 public class TransformDAOToDTO {
+
+    public static AttendanceList transformAttendanceListDaoWithId (AttendanceListDao listDao) {
+
+        AttendanceList result = transformAttendanceListDao(listDao);
+        result.setAttendanceListId(listDao.getAttendanceListId());
+        return result;
+    }
 
     public static AttendanceList transformAttendanceListDao (AttendanceListDao listDao) {
 

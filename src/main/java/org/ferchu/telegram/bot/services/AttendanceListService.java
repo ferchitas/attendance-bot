@@ -1,16 +1,15 @@
 package org.ferchu.telegram.bot.services;
 
 import org.ferchu.telegram.bot.dao.AttendanceListDao;
+import org.ferchu.telegram.bot.exceptions.NotFoundObjectInDatabaseException;
 import org.ferchu.telegram.bot.model.AttendanceList;
-import org.ferchu.telegram.bot.model.Attendee;
 import org.ferchu.telegram.bot.repository.IAttendanceListRepository;
-import org.ferchu.telegram.bot.repository.IAttendeeRepository;
-import org.ferchu.telegram.bot.utils.TransformDAOToDTO;
-import org.ferchu.telegram.bot.utils.TransformDTOtoDAO;
+import org.ferchu.telegram.bot.utils.Transformations.TransformDAOToDTO;
+import org.ferchu.telegram.bot.utils.Transformations.TransformDTOtoDAO;
+import org.ferchu.telegram.bot.utils.constants.InternalConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,9 +22,17 @@ public class AttendanceListService implements IAttendanceListService {
     public List<AttendanceListDao> findAll() {
 
         List<AttendanceList> result = (List<AttendanceList>) attendanceListRepository.findAll();
+        return TransformDTOtoDAO.transformAListOfAttendanceList(result);
+    }
 
-        List<AttendanceListDao> listDao = new ArrayList<>();
-        return listDao;
+    @Override
+    public AttendanceListDao findById(Long attendanceListId) {
+        AttendanceListDao result = TransformDTOtoDAO.
+                transformAttendanceList(attendanceListRepository.
+                        findById(attendanceListId).
+                        orElseThrow(() ->
+                                new NotFoundObjectInDatabaseException(InternalConstants.NOT_FOUND_OBJECT_IN_DATABASE)));
+        return result;
     }
 
     @Override
@@ -35,4 +42,25 @@ public class AttendanceListService implements IAttendanceListService {
         AttendanceList result = attendanceListRepository.save(listDto);
         return TransformDTOtoDAO.transformAttendanceList(result);
     }
+
+    @Override
+    public void delete(AttendanceListDao list) {
+
+        AttendanceList listDto = TransformDAOToDTO.transformAttendanceListDaoWithId(list);
+        attendanceListRepository.delete(listDto);
+    }
+
+    @Override
+    public void deleteAll() {
+        attendanceListRepository.deleteAll();
+    }
+
+    @Override
+    public AttendanceListDao update(AttendanceListDao listDao) {
+
+//        attendanceListRepository
+        return null;
+    }
+
+
 }
