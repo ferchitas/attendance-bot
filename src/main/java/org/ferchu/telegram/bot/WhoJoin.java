@@ -6,6 +6,7 @@ import org.ferchu.telegram.bot.configuration.ActivesCommandsConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -22,6 +23,9 @@ public class WhoJoin extends TelegramLongPollingBot {
 
     private static final Logger logger = LoggerFactory.getLogger(WhoJoin.class);
 
+    @Value("${bot.token}")
+    String token;
+
     @Autowired
     ApplicationContext applicationContext;
 
@@ -35,7 +39,7 @@ public class WhoJoin extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "1982309467:AAEmzlI2dQmP1OlaKzroM8UGsZ7QUTPnVQk";
+        return token;
     }
 
     @Override
