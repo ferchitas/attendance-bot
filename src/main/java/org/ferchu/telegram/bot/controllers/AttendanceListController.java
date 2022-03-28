@@ -1,6 +1,6 @@
 package org.ferchu.telegram.bot.controllers;
 
-import org.ferchu.telegram.bot.dao.AttendanceListDao;
+import org.ferchu.telegram.bot.dto.AttendanceListDto;
 import org.ferchu.telegram.bot.services.AttendanceListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class AttendanceListController {
      * @return
      */
     @GetMapping("/attendance-lists")
-    public ResponseEntity<List<AttendanceListDao>> getAttendanceLists() {
+    public ResponseEntity<List<AttendanceListDto>> getAttendanceLists() {
         return ResponseEntity.ok(attendanceListService.findAll());
     }
 
@@ -30,7 +30,7 @@ public class AttendanceListController {
      * @return
      */
     @GetMapping("/attendance-list/{attendanceListId}")
-    public ResponseEntity<AttendanceListDao> getAttendanceList(@RequestParam Long attendanceListId) {
+    public ResponseEntity<AttendanceListDto> getAttendanceList(@RequestParam Long attendanceListId) {
         System.out.println("This is a test!");
         return ResponseEntity.ok(attendanceListService.findById(attendanceListId));
     }
@@ -41,9 +41,9 @@ public class AttendanceListController {
      * @return
      */
     @PostMapping("/attendance-list")
-    public ResponseEntity<AttendanceListDao> saveAttendanceList(@RequestBody AttendanceListDao list) {
+    public ResponseEntity<AttendanceListDto> saveAttendanceList(@RequestBody AttendanceListDto list) {
         System.out.println("This is a test!");
-        AttendanceListDao savedList = attendanceListService.save(list);
+        AttendanceListDto savedList = attendanceListService.save(list);
         return ResponseEntity.ok(savedList);
     }
 
@@ -64,7 +64,7 @@ public class AttendanceListController {
      * @return
      */
     @DeleteMapping("/attendance-list")
-    public ResponseEntity<Void> deleteAttendanceList(@RequestBody AttendanceListDao listDao) {
+    public ResponseEntity<Void> deleteAttendanceList(@RequestBody AttendanceListDto listDao) {
         attendanceListService.delete(listDao);
         return ResponseEntity.noContent().build();
     }
@@ -75,9 +75,9 @@ public class AttendanceListController {
      * @return
      */
     @PutMapping("/attendance-list")
-    public ResponseEntity<AttendanceListDao> updateAttendanceList(@RequestBody AttendanceListDao listDao) {
+    public ResponseEntity<AttendanceListDto> updateAttendanceList(@RequestBody AttendanceListDto listDao) {
 
         System.out.println("This is a test!");
-        return ResponseEntity.ok(new AttendanceListDao());
+        return ResponseEntity.ok(new AttendanceListDto());
     }
 }

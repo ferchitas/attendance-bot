@@ -1,6 +1,6 @@
 package org.ferchu.telegram.bot.services;
 
-import org.ferchu.telegram.bot.dao.AttendanceListDao;
+import org.ferchu.telegram.bot.dto.AttendanceListDto;
 import org.ferchu.telegram.bot.exceptions.NotFoundObjectInDatabaseException;
 import org.ferchu.telegram.bot.model.AttendanceList;
 import org.ferchu.telegram.bot.repository.IAttendanceListRepository;
@@ -19,15 +19,15 @@ public class AttendanceListService implements IAttendanceListService {
     private IAttendanceListRepository attendanceListRepository;
 
     @Override
-    public List<AttendanceListDao> findAll() {
+    public List<AttendanceListDto> findAll() {
 
         List<AttendanceList> result = (List<AttendanceList>) attendanceListRepository.findAll();
         return TransformDTOtoDAO.transformAListOfAttendanceList(result);
     }
 
     @Override
-    public AttendanceListDao findById(Long attendanceListId) {
-        AttendanceListDao result = TransformDTOtoDAO.
+    public AttendanceListDto findById(Long attendanceListId) {
+        AttendanceListDto result = TransformDTOtoDAO.
                 transformAttendanceList(attendanceListRepository.
                         findById(attendanceListId).
                         orElseThrow(() ->
@@ -36,7 +36,7 @@ public class AttendanceListService implements IAttendanceListService {
     }
 
     @Override
-    public AttendanceListDao save(AttendanceListDao list) {
+    public AttendanceListDto save(AttendanceListDto list) {
 
         AttendanceList listDto = TransformDAOToDTO.transformAttendanceListDao(list);
         AttendanceList result = attendanceListRepository.save(listDto);
@@ -44,7 +44,7 @@ public class AttendanceListService implements IAttendanceListService {
     }
 
     @Override
-    public void delete(AttendanceListDao list) {
+    public void delete(AttendanceListDto list) {
 
         AttendanceList listDto = TransformDAOToDTO.transformAttendanceListDaoWithId(list);
         attendanceListRepository.delete(listDto);
@@ -56,7 +56,7 @@ public class AttendanceListService implements IAttendanceListService {
     }
 
     @Override
-    public AttendanceListDao update(AttendanceListDao listDao) {
+    public AttendanceListDto update(AttendanceListDto listDao) {
 
 //        attendanceListRepository
         return null;

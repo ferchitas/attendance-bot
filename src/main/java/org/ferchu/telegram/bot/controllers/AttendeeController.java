@@ -1,13 +1,19 @@
 package org.ferchu.telegram.bot.controllers;
 
-import org.ferchu.telegram.bot.model.Attendee;
+import com.google.common.collect.ImmutableMap;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
+import org.ferchu.telegram.bot.dto.AttendanceListDto;
+import org.ferchu.telegram.bot.dto.MemberDto;
 import org.ferchu.telegram.bot.services.AttendeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class AttendeeController {
@@ -15,16 +21,21 @@ public class AttendeeController {
     @Autowired
     AttendeeService attendeeService;
 
+    @Autowired
+    Tracer tracer;
+
     /**
      * Gets all the attendees
      *
      * @return
      */
     @GetMapping("/attendee")
-    public ResponseEntity<List<Attendee>> getAttendes(){
+    public ResponseEntity<List<MemberDto>> getAttendes(){
 
-        System.out.println("This is a test!");
-        return ResponseEntity.ok(new ArrayList<>());
+        Span span = tracer.buildSpan("get attendee").start();
+        span.setTag("http.status_code", 200);
+        span.finish();
+        return ResponseEntity.ok(attendeeService.findAll());
     }
 
     /**
@@ -33,10 +44,13 @@ public class AttendeeController {
      * @return
      */
     @GetMapping("/attendee/{attendeeId}")
-    public ResponseEntity<Attendee> getAttendee(){
+    public ResponseEntity<MemberDto> getAttendee(@RequestParam Long attendanceListId){
 
-        System.out.println("This is a test!");
-        return ResponseEntity.ok(new Attendee());
+        Span span = tracer.buildSpan("get by id attendee").start();
+        span.log(ImmutableMap.of("event", "get-request", "value",1));
+        span.setTag("http.status_code", 200);
+        span.finish();
+        return ResponseEntity.ok(attendeeService.findById(attendanceListId, span));
     }
 
     /**
@@ -45,11 +59,11 @@ public class AttendeeController {
      * @return
      */
     @PostMapping("/attendee")
-    public ResponseEntity<Attendee> saveAttendee(@RequestBody Attendee attendee){
+    public ResponseEntity<MemberDto> saveAttendee(@RequestBody MemberDto member){
 
         System.out.println("This is a test!");
-        attendeeService.save(attendee);
-        return ResponseEntity.ok(attendee);
+        attendeeService.save(member);
+        return ResponseEntity.ok(member);
     }
 
     /**
@@ -58,10 +72,11 @@ public class AttendeeController {
      * @return
      */
     @DeleteMapping("/attendee")
-    public ResponseEntity<Attendee> deleteAttendees(){
+    public ResponseEntity<?> deleteAttendees(){
 
         System.out.println("This is a test!");
-        return ResponseEntity.ok(new Attendee());
+        attendeeService.deleteAll();
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -70,10 +85,10 @@ public class AttendeeController {
      * @return
      */
     @DeleteMapping("/attendee/{attendeeId}")
-    public ResponseEntity<List<Attendee>> deleteAttendee(){
+    public ResponseEntity<?> deleteAttendee(@RequestBody MemberDto memberDto){
 
-        System.out.println("This is a test!");
-        return ResponseEntity.ok(new ArrayList<>());
+        attendeeService.delete(memberDto);
+        return ResponseEntity.noContent().build();
     }
 
     /**
@@ -82,9 +97,9 @@ public class AttendeeController {
      * @return
      */
     @PutMapping("/attendee/{attendeeId}")
-    public ResponseEntity<Attendee> updateAttendee(){
+    public ResponseEntity<MemberDto> updateAttendee(){
 
         System.out.println("This is a test!");
-        return ResponseEntity.ok(new Attendee());
+        return ResponseEntity.ok(new MemberDto());
     }
 }
