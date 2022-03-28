@@ -1,1 +1,1 @@
-web: java -jar target/whoJoinsBot-1.0-SNAPSHOT.jar
+web: java -jar -Dserver.port=${PORT} target/whoJoinsBot-1.0-SNAPSHOT.jar
