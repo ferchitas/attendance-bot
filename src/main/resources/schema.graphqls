@@ -1,0 +1,9 @@
+type Query {
+  attendees: [Attendee]
+}
+
+type Attendee {
+  memberId: String
+  name: String
+  message: String
+}
