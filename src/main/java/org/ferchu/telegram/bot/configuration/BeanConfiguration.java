@@ -1,5 +1,7 @@
 package org.ferchu.telegram.bot.configuration;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import graphql.GraphQL;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -23,12 +25,11 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 @org.springframework.context.annotation.Configuration
 public class BeanConfiguration {
-
-    @Value("classpath:schema.graphqls")
-    private Resource resource;
+    
     private GraphQL graphQL;
 
     @Autowired
@@ -40,8 +41,9 @@ public class BeanConfiguration {
 
     @PostConstruct
     public void init() throws IOException {
-        File file = resource.getFile();
-        TypeDefinitionRegistry typeDefinitionRegistry = new SchemaParser().parse(file);
+        URL url = Resources.getResource("schema.graphqls");
+        String sdl = Resources.toString(url, Charsets.UTF_8);
+        TypeDefinitionRegistry typeDefinitionRegistry = new SchemaParser().parse(sdl);
         RuntimeWiring runtimeWiring = buildRuntimeWiring();
         GraphQLSchema graphQLSchema = new SchemaGenerator().makeExecutableSchema(typeDefinitionRegistry, runtimeWiring);
         this.graphQL = GraphQL.newGraphQL(graphQLSchema).build();
